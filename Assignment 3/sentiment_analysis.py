@@ -10,7 +10,7 @@ import main
 
 
 def tweet_cleaner(tweet):
-    return "".join(u for u in tweet if u not in("?","!","#",",","/","&","$","@","\"","'"))
+    return "".join(u for u in tweet if u not in("?","!","#",",","/","&","$","@","\"","'",":",";","=",".","(",")","%","*"))
     # this function uses an interable with the .join() function to get rid of any punctuation in the tweet. I felt this was
     # easier than using the .replace() funcation
 
