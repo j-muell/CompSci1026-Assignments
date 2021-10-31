@@ -5,14 +5,15 @@
 # the keywords, and giving evaluation to the words, etc.
 
 import main
+from string import punctuation
 
 # -- CONSTANTS --
 
 
 def tweet_cleaner(tweet_word):
-    return "".join(u for u in tweet_word if u not in("?","!","#",",","/","&","$","@","\"","'",":",";","=",".","(",")","%","*"))
-    # this function uses an interable with the .join() function to get rid of any punctuation in the tweet. I felt this was
-    # easier than using the .replace() funcation
+    return tweet_word.lower().strip(punctuation)
+    # using an imported punctutation variable, i use .strip() to take all leading and trailing punctuation out of the given word
+
 
 def get_longlat(full_tweet):
     result = full_tweet[full_tweet.find('[')+1:full_tweet.find(']')]
@@ -21,8 +22,20 @@ def get_longlat(full_tweet):
     return result
 
 def determine_timezone():
-    pass
+    get_longlat()
 
+
+def tweet_split_and_clean(tweet_sentence):
+    if '.' in tweet_sentence:
+        tweet_sentence = tweet_sentence.replace('.', ' ')
+    tweet_words = tweet_sentence.split()
+    for index, word in enumerate(tweet_words):
+        tweet_words[index] = tweet_cleaner(word)
+        
+    tweet_words[:] = [x for x in tweet_words if x.strip()]
+    return tweet_words
+
+    
 
 def compute_tweets(tweets_file, keywords_file):
     try: 
