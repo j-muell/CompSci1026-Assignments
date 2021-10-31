@@ -9,10 +9,19 @@ import main
 # -- CONSTANTS --
 
 
-def tweet_cleaner(tweet):
-    return "".join(u for u in tweet if u not in("?","!","#",",","/","&","$","@","\"","'",":",";","=",".","(",")","%","*"))
+def tweet_cleaner(tweet_word):
+    return "".join(u for u in tweet_word if u not in("?","!","#",",","/","&","$","@","\"","'",":",";","=",".","(",")","%","*"))
     # this function uses an interable with the .join() function to get rid of any punctuation in the tweet. I felt this was
     # easier than using the .replace() funcation
+
+def get_longlat(full_tweet):
+    result = full_tweet[full_tweet.find('[')+1:full_tweet.find(']')]
+    result = result.split()
+    result[0] = result[0].replace(',', '')
+    return result
+
+def determine_timezone():
+    pass
 
 
 def compute_tweets(tweets_file, keywords_file):
