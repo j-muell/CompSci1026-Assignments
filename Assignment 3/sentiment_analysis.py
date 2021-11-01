@@ -59,23 +59,18 @@ def input_splitting(data_string):
     full_fix = first_fix[23:]
     return tweet_split_and_clean(full_fix)
 
-def keyword_to_dictionary(keywords): # not currently working properly
-    result = [{}]
-    for item in keywords:
-        key, val = item.split(",", 1)
-        if key in result[-1]:
-            result.append({})
-        result[-1][key] = val
-    return result
+
 
 
 def compute_tweets(tweets_file, keywords_file):
     try: 
         tweets = open(tweets_file)
-        keywords = open(keywords_file)
+        with open('keywords.txt') as f:
+            keyword_dict = {k: int(v) for line in f for k,v in [line.strip().split(',')]}
+        # instead of opening this file normally i am using dictionary comprehension to turn the entire file into a dictionary
+        # instead of the standard list which would come from using the readlines() function.
 
         tweet_list = tweets.readlines()
-        keywords_list = keywords_file.readlines()
         
         
 
