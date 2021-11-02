@@ -20,6 +20,30 @@ central_total_keywordTweets = 0
 mountain_total_keywordTweets = 0
 pacific_total_keywordTweets = 0
 
+# Constants for Timezone Detection
+    # eastern begin
+p1 = [49.189787, -67.444574]
+p2 = [24.660845, -67.444574]
+    # Central begin, eastern end
+p3 = [49.189787, -87.518395]
+# p4 = [24.660845, -87.518395]      - Not needed
+    # Mountain begin, central end
+p5 = [49.189787, -101.998892]
+# p6 = [24.660845, -101.998892]     - Not needed
+    # Pacific begin, mountain end
+p7 = [49.189787, -115.236428]
+# p8 = [24.660845, -115.236428]     - Not needed
+    # pacific end, still pacific
+p9 = [49.189787, -125.242264]
+# p10 = [24.660845, -125.242264]
+
+# -- Timezone Lists --
+
+eastern_list = []
+central_list = []
+mountain_list = []
+pacific_list = []
+
 
 def get_longlat(full_tweet):
     # takes in the entire data string and separates out the long and lat into a list, then returns the list. also removes comma
@@ -28,8 +52,36 @@ def get_longlat(full_tweet):
     result[0] = result[0].replace(',', '')
     return result
 
-def determine_timezone():
-    get_longlat()
+def determine_timezone(tweet_list):
+    # takes the list of data and finds the timezone region it should belong to. It then appends that data string to its proper list
+    
+    for index, tweet in enumerate(tweet_list): # takes in index and tweet data and creates a for loop
+        long_lat = get_longlat(tweet) # determines the longlat for the tweet that is currently needed to work on
+        if float(long_lat[0]) <= float(p1[0]) and float(long_lat[0]) >= float(p2[0]):
+        # since the longitude for all points described are between the same numbers, you can use one conditional statement
+        # to test if it is contained within all regions in our plane of existence
+
+        # SOMETHING TO NOTE: In terms of borders, these test statements will always use the next region for its choice!
+        # (Except pacific, which will just use pacific!)
+            if float(long_lat[1]) <= float(p1[1]) and float(long_lat[1]) > float(p3[1]):
+                # this is testing for the eastern region
+                eastern_list.append(tweet_list[index])
+            elif float(long_lat[1]) <= float(p3[1]) and float(long_lat[1]) > float(p5[1]):
+                # testing for the central region
+                central_list.append(tweet_list[index])
+            elif float(long_lat[1]) <= float(p5[1]) and float(long_lat[1]) > float(p7[1]):
+                # testing for mountain region
+                mountain_list.append(tweet_list[index])
+            elif float(long_lat[1]) <= float(p7[1]) and float(long_lat[1]) >= float(p9[1]):
+                # testing for pacific region
+                pacific_list.append(tweet_list[index])
+            else:
+                # if nothing is found, continue to the next element in the tweet data and do nothing
+                continue
+        else:
+            # if nothing is found for the longitude, then also continue
+            continue
+            
 
 def tweet_cleaner(tweet_word):
     return tweet_word.lower().strip(punctuation)
@@ -62,18 +114,17 @@ def input_splitting(data_string):
 
 
 
-def compute_tweets(tweets_file, keywords_file):
+def compute_tweets():
     try: 
-        tweets = open(tweets_file)
+        with open('tweets.txt') as file: # opens the file 
+            tweet_list = file.read().splitlines() # reads and splitlines the file. Gets rid of the \n 
         with open('keywords.txt') as f:
             keyword_dict = {k: int(v) for line in f for k,v in [line.strip().split(',')]}
         # instead of opening this file normally i am using dictionary comprehension to turn the entire file into a dictionary
         # instead of the standard list which would come from using the readlines() function.
+        determine_timezone(tweet_list) # this will run the function to split all pieces of the file into region specific ones
 
-        tweet_list = tweets.readlines()
         
-        
-
 
     except FileNotFoundError as excpt:
         print(excpt)
