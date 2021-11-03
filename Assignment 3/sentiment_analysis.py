@@ -8,18 +8,6 @@ import main
 from string import punctuation
 import re
 
-# -- CONSTANTS --
-
-eastern_total_tweets = 0
-central_total_tweets = 0
-mountain_total_tweets = 0
-pacific_total_tweets = 0
-
-eastern_total_keywordTweets = 0
-central_total_keywordTweets = 0
-mountain_total_keywordTweets = 0
-pacific_total_keywordTweets = 0
-
 # Constants for Timezone Detection
     # eastern begin
 p1 = [49.189787, -67.444574]
@@ -81,7 +69,33 @@ def determine_timezone(tweet_list):
         else:
             # if nothing is found for the longitude, then also continue
             continue
-            
+
+def calculations(keyword_dict, tweet_list):
+    # - Constants for caclulations and returns
+    total_tweets = 0
+    total_keyword_tweets = 0
+    average_happiness = 0
+    happiness_sum = 0
+
+    for entry in tweet_list: # saying for each piece of the tweet list
+        word_list = input_splitting(entry) # run through the input splitting for list of words
+        total_tweets += 1 # add one to total tweets
+        keyword_happened_counter = 0 # this is used to know if the word list has already had a keyword tweet. Needs to be
+        # reset to 0 again in this spot.
+        for word in word_list:  # for each word in that word list 
+            for key, value in keyword_dict.items(): # take the key and respective value for each item in the dict
+                # print("key:", key, "val:", value)
+                if word == key: # if the word we got is the same as the key value
+                    if keyword_happened_counter == 0: # and the keyword counter hasnt gone up
+                        total_keyword_tweets += 1 # add one to the total keyword tweets
+                        keyword_happened_counter += 1 # then add one to keyword happened counter
+                    happiness_sum += value # and, if we have a keyword tweet, no matter what add to the happiness sum
+                else:
+                    continue # if we don't have a word == key, continue iterating.
+    average_happiness = happiness_sum / total_tweets # calculation for the average happiness value
+    return [average_happiness, total_keyword_tweets, total_tweets] # returning a tuple of info in proper order
+        
+                
 
 def tweet_cleaner(tweet_word):
     return tweet_word.lower().strip(punctuation)
@@ -122,7 +136,12 @@ def compute_tweets():
             keyword_dict = {k: int(v) for line in f for k,v in [line.strip().split(',')]}
         # instead of opening this file normally i am using dictionary comprehension to turn the entire file into a dictionary
         # instead of the standard list which would come from using the readlines() function.
+        
         determine_timezone(tweet_list) # this will run the function to split all pieces of the file into region specific ones
+        # calculations(keyword_dict, eastern_list)
+        # calculations(keyword_dict, central_list)
+        # calculations(keyword_dict, mountain_list)
+        # calculations(keyword_dict, pacific_list)
 
         
 
