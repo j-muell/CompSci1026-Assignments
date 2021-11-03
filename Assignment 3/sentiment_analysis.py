@@ -1,12 +1,12 @@
 # Programmer: Jason Mueller
 # CS 1026
-# Assignment 3: Tweet and happiness checker
+# Assignment 3: Tweitter data analysis and happiness checker
 # This file will be doing the main workload on evaluating the tweets. Calculating timezone, cleaning up the tweets, checking for
 # the keywords, and giving evaluation to the words, etc.
 
-import main
 from string import punctuation
 import re
+import os
 
 # Constants for Timezone Detection
     # eastern begin
@@ -92,9 +92,18 @@ def calculations(keyword_dict, tweet_list):
                     happiness_sum += value # and, if we have a keyword tweet, no matter what add to the happiness sum
                 else:
                     continue # if we don't have a word == key, continue iterating.
-    average_happiness = happiness_sum / total_tweets # calculation for the average happiness value
+    average_happiness = happiness_sum / total_keyword_tweets # calculation for the average happiness value
+
     return [average_happiness, total_keyword_tweets, total_tweets] # returning a tuple of info in proper order
-        
+
+def final_calculation(eastern, central, mountain, pacific):
+    final_calculations = []
+    final_calculations.append(eastern)
+    final_calculations.append(central)
+    final_calculations.append(mountain)
+    final_calculations.append(pacific)
+    return final_calculations
+
                 
 
 def tweet_cleaner(tweet_word):
@@ -128,24 +137,28 @@ def input_splitting(data_string):
 
 
 
-def compute_tweets():
+def compute_tweets(tweets, keywords):
     try: 
-        with open('tweets.txt') as file: # opens the file 
-            tweet_list = file.read().splitlines() # reads and splitlines the file. Gets rid of the \n 
-        with open('keywords.txt') as f:
+        with open(tweets, encoding="utf-8", errors="ignore") as f: # opens the file 
+            tweet_list = f.read().splitlines() # reads and splitlines the file. Gets rid of the \n 
+        with open(keywords, encoding="utf-8", errors="ignore") as f:
             keyword_dict = {k: int(v) for line in f for k,v in [line.strip().split(',')]}
         # instead of opening this file normally i am using dictionary comprehension to turn the entire file into a dictionary
         # instead of the standard list which would come from using the readlines() function.
         
         determine_timezone(tweet_list) # this will run the function to split all pieces of the file into region specific ones
-        # calculations(keyword_dict, eastern_list)
-        # calculations(keyword_dict, central_list)
-        # calculations(keyword_dict, mountain_list)
-        # calculations(keyword_dict, pacific_list)
+        eastern = calculations(keyword_dict, eastern_list)
+        central = calculations(keyword_dict, central_list)
+        mountain = calculations(keyword_dict, mountain_list)
+        pacific = calculations(keyword_dict, pacific_list)
 
+        return final_calculation(eastern, central, mountain, pacific)
         
 
     except FileNotFoundError as excpt:
+        # print(os.getcwd())
         print(excpt)
         print("One or more of the files you entered does not exist.")
+
+#print(compute_tweets('tweets.txt', 'keywords.txt'))
 
