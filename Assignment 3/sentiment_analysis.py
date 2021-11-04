@@ -6,7 +6,6 @@
 
 from string import punctuation
 import re
-import os
 
 # Constants for Timezone Detection
     # eastern begin
@@ -156,9 +155,8 @@ def compute_tweets(tweets, keywords):
         
 
     except FileNotFoundError as excpt:
-        # print(os.getcwd())
+        empty_list = []
         print(excpt)
         print("One or more of the files you entered does not exist.")
-
-#print(compute_tweets('tweets.txt', 'keywords.txt'))
+        return empty_list
 
