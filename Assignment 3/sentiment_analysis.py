@@ -40,16 +40,9 @@ def get_longlat(full_tweet):
     return result
 
 def determine_timezone(tweet_list):
-    # takes the list of data and finds the timezone region it should belong to. It then appends that data string to its proper list
-    
     for index, tweet in enumerate(tweet_list): # takes in index and tweet data and creates a for loop
         long_lat = get_longlat(tweet) # determines the longlat for the tweet that is currently needed to work on
         if float(long_lat[0]) <= float(p1[0]) and float(long_lat[0]) >= float(p2[0]):
-        # since the longitude for all points described are between the same numbers, you can use one conditional statement
-        # to test if it is contained within all regions in our plane of existence
-
-        # SOMETHING TO NOTE: In terms of borders, these test statements will always use the next region for its choice!
-        # (Except pacific, which will just use pacific!)
             if float(long_lat[1]) <= float(p1[1]) and float(long_lat[1]) > float(p3[1]):
                 # this is testing for the eastern region
                 eastern_list.append(tweet_list[index])
@@ -68,6 +61,13 @@ def determine_timezone(tweet_list):
         else:
             # if nothing is found for the longitude, then also continue
             continue
+    # print('\nEastern List:')
+    # for i in range(len(eastern_list)-1):
+    #     print(eastern_list[i])
+    
+    # print('\nCentral List: ', central_list)
+    # print('\nMountain List: ', mountain_list)
+    # print('\nPacific List: ', pacific_list)
 
 def calculations(keyword_dict, tweet_list):
     # - Constants for caclulations and returns
@@ -91,8 +91,10 @@ def calculations(keyword_dict, tweet_list):
                     happiness_sum += value # and, if we have a keyword tweet, no matter what add to the happiness sum
                 else:
                     continue # if we don't have a word == key, continue iterating.
-    average_happiness = happiness_sum / total_keyword_tweets # calculation for the average happiness value
-
+    if total_keyword_tweets != 0:
+        average_happiness = happiness_sum / total_keyword_tweets # calculation for the average happiness value
+    else:
+        average_happiness = 0
     return [average_happiness, total_keyword_tweets, total_tweets] # returning a tuple of info in proper order
 
 def final_calculation(eastern, central, mountain, pacific):
@@ -139,7 +141,8 @@ def input_splitting(data_string):
 def compute_tweets(tweets, keywords):
     try: 
         with open(tweets, encoding="utf-8", errors="ignore") as f: # opens the file 
-            tweet_list = f.read().splitlines() # reads and splitlines the file. Gets rid of the \n 
+            tweet_list = f.read().splitlines() # reads and splitlines the file. Gets rid of the \n
+            print(tweet_list)
         with open(keywords, encoding="utf-8", errors="ignore") as f:
             keyword_dict = {k: int(v) for line in f for k,v in [line.strip().split(',')]}
         # instead of opening this file normally i am using dictionary comprehension to turn the entire file into a dictionary
@@ -155,8 +158,10 @@ def compute_tweets(tweets, keywords):
         
 
     except FileNotFoundError as excpt:
-        empty_list = []
+        empty_list = [] 
         print(excpt)
         print("One or more of the files you entered does not exist.")
         return empty_list
 
+final = compute_tweets('tweets1.txt', 'key1.txt')
+print(final)
