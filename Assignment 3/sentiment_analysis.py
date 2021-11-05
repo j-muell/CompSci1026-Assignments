@@ -163,5 +163,5 @@ def compute_tweets(tweets, keywords):
         print("One or more of the files you entered does not exist.")
         return empty_list
 
-final = compute_tweets('tweets1.txt', 'key1.txt')
+final = compute_tweets('tweets2.txt', 'key2.txt')
 print(final)
