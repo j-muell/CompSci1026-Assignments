@@ -24,14 +24,6 @@ p7 = [49.189787, -115.236428]
 p9 = [49.189787, -125.242264]
 # p10 = [24.660845, -125.242264]
 
-# -- Timezone Lists --
-
-eastern_list = []
-central_list = []
-mountain_list = []
-pacific_list = []
-
-
 def get_longlat(full_tweet):
     # takes in the entire data string and separates out the long and lat into a list, then returns the list. also removes comma
     result = full_tweet[full_tweet.find('[')+1:full_tweet.find(']')]
@@ -40,6 +32,7 @@ def get_longlat(full_tweet):
     return result
 
 def determine_timezone(tweet_list):
+    
     for index, tweet in enumerate(tweet_list): # takes in index and tweet data and creates a for loop
         long_lat = get_longlat(tweet) # determines the longlat for the tweet that is currently needed to work on
         if float(long_lat[0]) <= float(p1[0]) and float(long_lat[0]) >= float(p2[0]):
@@ -61,13 +54,6 @@ def determine_timezone(tweet_list):
         else:
             # if nothing is found for the longitude, then also continue
             continue
-    # print('\nEastern List:')
-    # for i in range(len(eastern_list)-1):
-    #     print(eastern_list[i])
-    
-    # print('\nCentral List: ', central_list)
-    # print('\nMountain List: ', mountain_list)
-    # print('\nPacific List: ', pacific_list)
 
 def calculations(keyword_dict, tweet_list):
     # - Constants for caclulations and returns
@@ -106,7 +92,6 @@ def final_calculation(eastern, central, mountain, pacific):
     return final_calculations
 
                 
-
 def tweet_cleaner(tweet_word):
     return tweet_word.lower().strip(punctuation)
     # using an imported punctutation variable, i use .strip() to take all leading and trailing punctuation out of the given word
@@ -139,15 +124,20 @@ def input_splitting(data_string):
 
 
 def compute_tweets(tweets, keywords):
-    try: 
+    try:
+        # - Lists 
+        global eastern_list, central_list, mountain_list, pacific_list
+        eastern_list = []
+        central_list = []
+        mountain_list = []
+        pacific_list = []
         with open(tweets, encoding="utf-8", errors="ignore") as f: # opens the file 
             tweet_list = f.read().splitlines() # reads and splitlines the file. Gets rid of the \n
-            print(tweet_list)
         with open(keywords, encoding="utf-8", errors="ignore") as f:
             keyword_dict = {k: int(v) for line in f for k,v in [line.strip().split(',')]}
         # instead of opening this file normally i am using dictionary comprehension to turn the entire file into a dictionary
         # instead of the standard list which would come from using the readlines() function.
-        
+               
         determine_timezone(tweet_list) # this will run the function to split all pieces of the file into region specific ones
         eastern = calculations(keyword_dict, eastern_list)
         central = calculations(keyword_dict, central_list)
@@ -162,6 +152,3 @@ def compute_tweets(tweets, keywords):
         print(excpt)
         print("One or more of the files you entered does not exist.")
         return empty_list
-
-final = compute_tweets('tweets2.txt', 'key2.txt')
-print(final)
