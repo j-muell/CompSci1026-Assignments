@@ -105,7 +105,7 @@ def tweet_split_and_clean(tweet_sentence):
     for index, word in enumerate(tweet_words):
         tweet_words[index] = tweet_cleaner(word)
         
-    tweet_words[:] = [x for x in tweet_words if x.strip()]
+    tweet_words[:] = [x for x in tweet_words if x.strip()] # list comprehension to finish up the tweet words list.
     return tweet_words
 
 def input_splitting(data_string):
