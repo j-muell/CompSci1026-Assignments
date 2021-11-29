@@ -1,4 +1,4 @@
-class country(object):
+class Country(object):
     def __init__(self, name, pop, area, continent):
         self.name = name
         self.population = pop
@@ -45,7 +45,3 @@ class country(object):
 
     def __repr__(self):
         return self.getName() + ' (pop: ' + self.getPopulation() + ', size: ' + self.getArea() + ') in ' + self.getContinent()
-
-
-newCountry = country('United_States_of_America', '11723456', '324935', 'North_America')
-print(repr(newCountry))

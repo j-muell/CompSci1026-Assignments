@@ -120,9 +120,6 @@ def input_splitting(data_string):
     full_fix = first_fix[23:]
     return tweet_split_and_clean(full_fix)
 
-
-
-
 def compute_tweets(tweets, keywords):
     try:
         # - Lists 
@@ -137,7 +134,7 @@ def compute_tweets(tweets, keywords):
             keyword_dict = {k: int(v) for line in f for k,v in [line.strip().split(',')]}
         # instead of opening this file normally i am using dictionary comprehension to turn the entire file into a dictionary
         # instead of the standard list which would come from using the readlines() function.
-               
+                
         determine_timezone(tweet_list) # this will run the function to split all pieces of the file into region specific ones
         eastern = calculations(keyword_dict, eastern_list)
         central = calculations(keyword_dict, central_list)
