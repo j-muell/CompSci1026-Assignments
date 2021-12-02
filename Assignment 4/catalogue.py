@@ -9,7 +9,7 @@ class CountryCatalogue(object):
         with open(countryFile, encoding="utf-8", errors="ignore") as f:
             country_list = f.read().splitlines()
 
-        for entry in country_list[:1]:
+        for entry in country_list[:1]:                              # the purpose of this section is to use the header to verify the order of the data in the files
             formatted_header = entry.split('|')
             testers = ['Country', 'Continent', 'Population', 'Area']
             for theType in testers:
@@ -52,7 +52,6 @@ class CountryCatalogue(object):
             else:
                 return None
 
-
     def addCountry(self, countryName, pop, area, cont):
         countryToAdd = Country(countryName, pop, area, cont)
         if countryToAdd in self.countryCat:
@@ -64,6 +63,9 @@ class CountryCatalogue(object):
     def printCountryCatalogue(self):
         for entry in self.countryCat:
             print(entry)
+
+    def saveCountryCatalogue(self, fname):
+        pass
         
 
 
