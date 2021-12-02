@@ -1,10 +1,9 @@
 from country import Country
 
 class CountryCatalogue(object):
-    def __init__(self):
+    def __init__(self, countryFile):
         self.countryCat = []
         
-    def dataCreator(self, countryFile):
 
         with open(countryFile, encoding="utf-8", errors="ignore") as f:
             country_list = f.read().splitlines()
@@ -32,7 +31,36 @@ class CountryCatalogue(object):
             countryUp = Country(formatted[country_num], formatted[pop_num], formatted[area_num], formatted[continent_num])
             self.countryCat.append(countryUp)
 
-        return self.countryCat
+    def setPopulationOfCountry(self, country, pop):
+        pass
+
+    def setAreaOfCountry(self, country, area):
+        pass
+
+    def setContinentOfCountry(self, country, continent):
+        pass
+
+    def findCountry(self, country):
+        for obj in self.countryCat:
+            if obj.getName() == country:
+                return obj
+            else:
+                return None
+    
+    def getName(self):
+        return self.name
+
+    def addCountry(self, countryName, pop, area, cont):
+        countryToAdd = Country(countryName, pop, area, cont)
+        if countryToAdd in self.countryCat:
+            return False
+        else:
+            self.countryCat.append(countryToAdd)
+            return True
+
+    def printCountryCatalogue(self):
+        for entry in self.countryCat:
+            print(entry)
+        
 
 
-print(CountryCatalogue().dataCreator('data.txt'))
