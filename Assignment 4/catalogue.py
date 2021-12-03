@@ -1,4 +1,3 @@
-from _typeshed import NoneType
 from country import Country
 
 class CountryCatalogue(object):
@@ -33,17 +32,19 @@ class CountryCatalogue(object):
             self.countryCat.append(countryUp)
 
     def setPopulationOfCountry(self, country, pop):
-        countryToFind = self.findCountry(country)
-        countryToFind.setPopulataion(pop)
+        for i in self.countryCat:
+            if i.getName() == country:
+                i.setPopulation(pop)
 
     def setAreaOfCountry(self, country, area):
         for i in self.countryCat:
             if i.getName() == country:
-                i.setArea() = area
+                i.setArea(area)
             
-
     def setContinentOfCountry(self, country, continent):
-        pass
+        for i in self.countryCat:
+            if i.getName() == country:
+                i.setContinent(continent)
 
     def findCountry(self, country):
         for obj in self.countryCat:
