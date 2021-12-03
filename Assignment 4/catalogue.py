@@ -1,4 +1,3 @@
-from _typeshed import NoneType
 from country import Country
 
 class CountryCatalogue(object):
@@ -39,7 +38,7 @@ class CountryCatalogue(object):
     def setAreaOfCountry(self, country, area):
         for i in self.countryCat:
             if i.getName() == country:
-                i.setArea() = area
+                i.setArea(area)
             
 
     def setContinentOfCountry(self, country, continent):
@@ -65,7 +64,11 @@ class CountryCatalogue(object):
             print(entry)
 
     def saveCountryCatalogue(self, fname):
-        pass
+            
+
+
+        with open(fname, 'w') as out_file:
+            out_file.write()
         
 
 
