@@ -1,9 +1,17 @@
+# Programmer: Jason Mueller
+# Date: Dec 6
+# CS 1026
+# Assignment 4
+# File Uses:
+
 class Country(object):
     def __init__(self, name, pop, area, continent):
         self.name = name
         self.population = pop
         self.area = area
         self.continent = continent
+        self.nameOG = name
+        self.continentOG = continent
 
     def listToString(self, s):
         newStr = " "
@@ -39,6 +47,9 @@ class Country(object):
     
     def setContinent(self, continent):
         self.continent = continent
+
+    def original_printing(self):
+        return '\n' + self.nameOG + '|' + self.continentOG + '|' + self.population + '|' + self.area
 
     # --STRING REPRESENTATION--
 

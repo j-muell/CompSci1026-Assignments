@@ -1,3 +1,9 @@
+# Programmer: Jason Mueller
+# Date: Dec 6
+# CS 1026
+# Assignment 4
+# File Uses:
+
 from country import Country
 
 class CountryCatalogue(object):
@@ -65,12 +71,12 @@ class CountryCatalogue(object):
         for entry in self.countryCat:
             print(entry)
 
-    def saveCountryCatalogue(self, fname):
-            
-
-
+    def saveCountryCatalogue(self, fname = 'testWriting.txt'):
+        sorted_countryCat = sorted(self.countryCat, key=lambda x: x.name, reverse=False)    
         with open(fname, 'w') as out_file:
-            out_file.write()
-        
+            out_file.write('Country|Continent|Population|Area')
+            for i in sorted_countryCat:
+                out_file.write(i.original_printing())
+
 
 
