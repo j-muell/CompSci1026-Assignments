@@ -9,7 +9,7 @@ from country import Country
 class CountryCatalogue(object):
     def __init__(self, countryFile):
         self.countryCat = []
-        
+
 
         with open(countryFile, encoding="utf-8", errors="ignore") as f:
             country_list = f.read().splitlines()
