@@ -79,7 +79,7 @@ def fileAnalysis(updateFile):
             # try except used to make sure there isn't an error thrown when accessing the first element. If there is then it isn't valid anyway.
 
             try:
-                if character[0] in "ABCDEFGHIJKLMNOPQRSTUVWKYZ":
+                if character[0] in "ABCDEFGHIJKLMNOPQRSTUVWKYZ": # makes sure first character is capital
                     pass
                 else:
                     isLineValid = False
@@ -90,7 +90,7 @@ def fileAnalysis(updateFile):
 
         for index, section in enumerate(lineTextList[1:]): # run through the element of the list but not including the country
 
-            letter = section[0:2] # taakes only the letter
+            letter = section[0:2] # takes only the letter
             content = section[2:] # takes everything after the letter
 
             
