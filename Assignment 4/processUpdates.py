@@ -44,7 +44,57 @@ def updateFailed():
         file.write("Update Unsucessful.\n")
 
 def fileAnalysis(updateFile):
-    pass
+
+    continents = ['Africa', 'Antartica', 'Arctic', 'Asia', 'Europe', 'North_America', 'South_America']
+    validInfo = []
+    badInfo = []
+
+    updateFile = updateFile.readlines()
+
+    for line in updateFile:
+        
+        isLineValid = True
+
+        formatted_line = line.replace('\n', "")
+        formatted_line = formatted_line.replace(" ", "")
+        lineTextList = formatted_line.split(";")
+
+        # if the len of the linelist is greater than 4, there was more than 3 semicolons, therefore it is not valid.
+        if len(lineTextList) > 4:
+            isLineValid = False
+
+        # next, see if the country name, which is always in the front, is there, and if it only has normal characters and underscores
+        for character in lineTextList[0]:
+            if character in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWKYZ_":
+                pass
+            else:
+                isLineValid = False
+                break
+        
+        # test if country name is capitals
+
+        countryName = lineTextList[0].split("_")
+
+        for character in countryName:
+            # try except used to make sure there isn't an error thrown when accessing the first element. If there is then it isn't valid anyway.
+
+            try:
+                if character[0] in "ABCDEFGHIJKLMNOPQRSTUVWKYZ":
+                    pass
+                else:
+                    isLineValid = False
+                    break
+            except IndexError:
+                isLineValid = False
+                break
+
+        for index, section in enumerate(lineTextList[1:]): # run through the element of the list but not including the country
+
+            letter = section[0:2] # taakes only the letter
+            content = section[2:] # takes everything after the letter
+
+            
+
 
 def processUpdates(cntryFileName, updateFileName, badUpdateFile):
 
