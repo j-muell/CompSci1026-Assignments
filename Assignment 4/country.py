@@ -2,7 +2,7 @@
 # Date: Dec 6
 # CS 1026
 # Assignment 4
-# File Uses:
+# File Uses: create the country object
 
 class Country(object):
     def __init__(self, name, pop, area, continent):

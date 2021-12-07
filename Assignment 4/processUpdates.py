@@ -2,7 +2,7 @@
 # Date: Dec 6
 # CS 1026
 # Assignment 4
-# File Uses:
+# File Uses: Process all updates from the update file and complete the output
 
 from catalogue import CountryCatalogue
 
@@ -45,6 +45,7 @@ def updateFailed():
 
 def fileAnalysis(updateFile):
 
+    # lists for final sorting of valid and bad info
     continents = ['Africa', 'Antartica', 'Arctic', 'Asia', 'Europe', 'North_America', 'South_America']
     validInfo = []
     badInfo = []
@@ -52,12 +53,13 @@ def fileAnalysis(updateFile):
     updateFile = updateFile.readlines()
 
     for line in updateFile:
-        
+        # variables to be used 
         isLineValid = True
         populationCounter = 0
         areaCounter = 0
         continentCounter = 0
 
+        # format the update lines so that they can be used
         formatted_line = line.replace('\n', "")
         formatted_line = formatted_line.replace(" ", "")
         lineTextList = formatted_line.split(";")
@@ -96,6 +98,8 @@ def fileAnalysis(updateFile):
             letter = section[0:2] # takes only the letter
             content = section[2:] # takes everything after the letter
 
+
+            # if the letter is P A or C add 1 to the respective counter (to be used to check if there is multiple of any)
             if letter == "P=":
                 populationCounter += 1
             elif letter == "A=":
@@ -103,22 +107,22 @@ def fileAnalysis(updateFile):
             elif letter == "C=":
                 continentCounter += 1
 
-            if not (letter == "P=" or letter == "A=" or letter == "C="):
+            if not (letter == "P=" or letter == "A=" or letter == "C="): # check if there is none of these letters
                 isLineValid = False
                 break
             
-            elif populationCounter > 1 or areaCounter > 1 or continentCounter > 1:
+            elif populationCounter > 1 or areaCounter > 1 or continentCounter > 1: # if any counter is more than 1, invalid
                 isLineValid = False
                 break
             
-            elif letter == 'C=' and content not in continents:
+            elif letter == 'C=' and content not in continents: # if the continent isn't in the continent list it is invalid
                 isLineValid = False
                 break
 
-            elif letter == 'P=' or letter == 'A=':
+            elif letter == 'P=' or letter == 'A=': # for only p and a which handle numbers
 
                 for character in content:
-                    if character not in '1234567890,':
+                    if character not in '1234567890,': # every character must be a number or comma
                         isLineValid = False
                         break
 
@@ -129,15 +133,6 @@ def fileAnalysis(updateFile):
                     elif overallGroupIndex > 0 and len(numberGroup) < 3:
                         isLineValid = False
                         break
-                    
-                    
-                    # if overallGroupIndex > 0 and len(numberGroup) < 3: # basically, each group after the first number has to have exactly 3 numbers.
-                    #     # if the group is over index of 0, which is the first number, and the length of the number group is less than 3, we know it is not valid
-                    #     isLineValid = False
-                    #     break
-                    # if len(numberGroup) > 3: # if we have any group above 3, it is not valid.
-                    #     isLineValid = False
-                    #     break
 
         if isLineValid:
             validInfo.append(lineTextList) # basically if it runs through all tests above it is still valid and goes into the valid info list
@@ -152,19 +147,19 @@ def fileAnalysis(updateFile):
 
 def processUpdates(cntryFileName, updateFileName, badUpdateFile):
 
-    cntryFileName = fileNameCheck(cntryFileName)
+    cntryFileName = fileNameCheck(cntryFileName) # quick name check 
     updateFileName = fileNameCheck(updateFileName)
 
-    isFileValid, cntryFileName = validityChecker(cntryFileName, "Country")
+    isFileValid, cntryFileName = validityChecker(cntryFileName, "Country") # run the validity checker for country file 
     if isFileValid: 
-        pass
+        pass # if its true, pass (do nothing)
     else:
-        tupleReturn = (False, None)
+        tupleReturn = (False, None) # otherwise return a tuple of False and None
         return tupleReturn
 
-    catObject = CountryCatalogue(cntryFileName)
+    catObject = CountryCatalogue(cntryFileName) # create the category objects with the file
 
-    isFileValid, updateFileName = validityChecker(updateFileName, 'Update')
+    isFileValid, updateFileName = validityChecker(updateFileName, 'Update') # run validity checker for the update file
     if isFileValid:
         pass
     else:
@@ -172,7 +167,7 @@ def processUpdates(cntryFileName, updateFileName, badUpdateFile):
         return tupleReturn
 
     with open(updateFileName, 'r', encoding='utf-8') as updateFile:
-        validInfo, badInfo = fileAnalysis(updateFile)
+        validInfo, badInfo = fileAnalysis(updateFile) # open and run the analysis of the update file
     
     with open(badUpdateFile, 'w') as badUpdates:
         for piece in badInfo: # for the element of badInfo list, write them indivudally to the badUpdates file 
@@ -213,7 +208,7 @@ def processUpdates(cntryFileName, updateFileName, badUpdateFile):
         if addCountry == 1:
             catObject.addCountry(country, population, area, continent)
     
-    catObject.saveCountryCatalogue("output.txt")
+    catObject.saveCountryCatalogue("output.txt") # save finished product to output.txt
 
 
     tupleReturn = (True, catObject)

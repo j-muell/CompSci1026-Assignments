@@ -2,7 +2,7 @@
 # Date: Dec 6
 # CS 1026
 # Assignment 4
-# File Uses:
+# File Uses: create the object country catalogue to be used with the data files
 
 from country import Country
 
