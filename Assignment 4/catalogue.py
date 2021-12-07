@@ -56,8 +56,8 @@ class CountryCatalogue(object):
         for obj in self.countryCat:
             if obj.getName() == country:
                 return obj
-            else:
-                return None
+        
+        return None
 
     def addCountry(self, countryName, pop, area, cont):
         countryToAdd = Country(countryName, pop, area, cont)
